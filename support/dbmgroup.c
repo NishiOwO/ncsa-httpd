@@ -126,7 +126,7 @@ void dbm_add_user(DBM *dbmgroup, char *group, char *user) {
   resp = dbm_fetch(dbmgroup,key);
   if (resp.dptr) {
     printf("Adding %s to group %s.\n",user,group);
-    if (resp.dptr[0]) {
+    if (((char*)resp.dptr)[0]) {
       if (!(newusers = (char *)malloc(resp.dsize + strlen(user) + 2))) {
 	fprintf(stderr,"Not enough memory to complete operation.\n");
 	perror("malloc");
@@ -168,9 +168,9 @@ void dbm_del_user(DBM *dbmgroup, char *group, char *user) {
   resp = dbm_fetch(dbmgroup,key);
 
   if (resp.dptr) {
-    if (resp.dptr[0] != '\0') {
+    if (((char*)resp.dptr)[0] != '\0') {
       if (!strcmp(resp.dptr,user)) {
-	resp.dptr[0] = '\0';
+	((char*)resp.dptr)[0] = '\0';
 	resp.dsize = 1;
 	dbm_store(dbmgroup,key,resp,DBM_REPLACE);
       } else {
@@ -188,7 +188,7 @@ void dbm_del_user(DBM *dbmgroup, char *group, char *user) {
 	printf("Deleting user %s from group %s.\n",user,group);
 	userlist = (char *)malloc(strlen(resp.dptr) - strlen(user)+1);
 	if (tmp != resp.dptr) {
-	  strncpy(userlist,resp.dptr,tmp-resp.dptr-1);
+	  strncpy(userlist,resp.dptr,tmp-((char*)resp.dptr)-1);
 	  strcat(userlist,(tmp+strlen(user)));
 	} else {
 	  strcpy(userlist,(tmp+strlen(user)));

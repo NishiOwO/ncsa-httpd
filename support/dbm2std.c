@@ -55,12 +55,12 @@ int main (int argc, char *argv[])
 
 	pch1 = key;
 	for (ndx = 0; ndx < dtKey.dsize; ndx++)
-	    *pch1++ = dtKey.dptr[ndx];
+	    *pch1++ = ((char*)dtKey.dptr)[ndx];
 	*pch1 = '\0';
 
 	pch2 = rec;
 	for (ndx = 0; ndx < dtRec.dsize; ndx++)
-	    *pch2++ = dtRec.dptr[ndx];
+	    *pch2++ = ((char*)dtRec.dptr)[ndx];
 	*pch2 = '\0';
 
 	printf ("Storing data <%s> with key <%s>\n",
